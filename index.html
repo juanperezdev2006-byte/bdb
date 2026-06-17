@@ -756,11 +756,13 @@ function switchTab(el, type) {
     formTarjeta.style.display = 'none';
   }
 }
+window.switchTab = switchTab;
 
 function togglePass(inputId) {
   const inp = document.getElementById(inputId);
   inp.type = inp.type === 'password' ? 'text' : 'password';
 }
+window.togglePass = togglePass;
 
 function checkForm() {
   const doc  = document.getElementById('docInput').value.trim();
