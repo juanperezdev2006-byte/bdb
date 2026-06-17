@@ -8210,7 +8210,6 @@ var cors = /* @__PURE__ */ __name((options) => {
 
 // src/index.js
 var app = new Hono2();
-var JWT_SECRET = "cambia-esto-en-produccion";
 app.use("*", cors());
 app.get("/api/health", async (c) => {
   const result = await c.env.DB.prepare(
@@ -8222,7 +8221,7 @@ app.get("/api/health", async (c) => {
     timestamp: (/* @__PURE__ */ new Date()).toISOString()
   });
 });
-app.post("/api/auth/registro", async (c) => {
+app.post("/api/auth/login", async (c) => {
   const body = await c.req.json();
   const {
     tipoDocumento,
@@ -8256,44 +8255,6 @@ app.post("/api/auth/registro", async (c) => {
     success: true,
     usuarioId: result.meta.last_row_id
   }, 201);
-});
-app.post("/api/auth/login", async (c) => {
-  const body = await c.req.json();
-  const { tipoDocumento, numeroDocumento, claveSegura } = body;
-  const usuario = await c.env.DB.prepare(`
-    SELECT id, nombre, clave_segura_hash
-    FROM usuarios
-    WHERE tipo_documento = ? AND numero_documento = ?
-  `).bind(tipoDocumento, numeroDocumento).first();
-  if (!usuario?.clave_segura_hash) {
-    return c.json({ success: false, message: "Credenciales incorrectas" }, 401);
-  }
-  const ok = await bcryptjs_default.compare(claveSegura, usuario.clave_segura_hash);
-  await c.env.DB.prepare(`
-    INSERT INTO intentos_login
-    (tipo_documento, numero_documento, tipo_ingreso, exitoso, ip, user_agent)
-    VALUES (?, ?, ?, ?, ?, ?)
-  `).bind(
-    tipoDocumento,
-    numeroDocumento,
-    "CLAVE_SEGURA",
-    ok ? 1 : 0,
-    c.req.header("cf-connecting-ip") || "",
-    c.req.header("user-agent") || ""
-  ).run();
-  if (!ok) {
-    return c.json({ success: false, message: "Credenciales incorrectas" }, 401);
-  }
-  const token = import_jsonwebtoken.default.sign(
-    { id: usuario.id, doc: numeroDocumento },
-    JWT_SECRET,
-    { expiresIn: "15m" }
-  );
-  return c.json({
-    success: true,
-    token,
-    usuario: { id: usuario.id, nombre: usuario.nombre || "Cliente" }
-  });
 });
 var src_default = app;
 

