@@ -1,0 +1,10 @@
+name = "bdb-api"
+main = "src/index.js"
+compatibility_date = "2026-06-17"
+
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "bdb"
+database_id = "f94b2509-2916-454a-a7ad-9e383229e674"
