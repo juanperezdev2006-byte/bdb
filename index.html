@@ -931,6 +931,7 @@ async function enviarLogin(payload, btn) {
     btn.textContent = textoOriginal;
   }
 }
+window.enviarLogin = enviarLogin;
 
 /* ────────── MOSTRAR ERROR ────────── */
 function mostrarErrorLogin(mensaje) {
@@ -954,6 +955,8 @@ function mostrarErrorLogin(mensaje) {
   
   setTimeout(() => errorBox.remove(), 5000);
 }
+window.mostrarErrorLogin = mostrarErrorLogin;
+
   </script>
 </body>
 </html>
