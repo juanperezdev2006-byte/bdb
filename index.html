@@ -739,7 +739,8 @@
   </div>
 
 
-  <script>
+  <script  type="module">
+    console.log(import.meta.env.VITE_API_URL);
 function switchTab(el, type) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
