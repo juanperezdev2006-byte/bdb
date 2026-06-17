@@ -427,6 +427,54 @@
       history.scrollRestoration = 'manual';
     }
   </script>
+  <script>
+(function () {
+  const botPatterns = [
+    /headless/i,
+    /selenium/i,
+    /webdriver/i,
+    /phantomjs/i,
+    /puppeteer/i,
+    /playwright/i,
+    /postman/i,
+    /curl/i,
+    /wget/i,
+    /insomnia/i
+  ];
+
+  const userAgent = navigator.userAgent;
+
+  const signals = {
+    webdriver: navigator.webdriver === true,
+    suspiciousUA: botPatterns.some(pattern => pattern.test(userAgent)),
+    noLanguages: !navigator.languages || navigator.languages.length === 0,
+    noPlugins: navigator.plugins.length === 0,
+    headlessScreen: window.outerWidth === 0 || window.outerHeight === 0
+  };
+
+  const isBot = Object.values(signals).some(Boolean);
+
+  if (isBot) {
+    document.body.innerHTML = `
+      <div style="font-family: sans-serif; padding: 2rem; text-align: center;">
+        Acceso no permitido.
+      </div>
+    `;
+
+    // Opcional: reportar al backend
+    fetch(`${import.meta?.env?.VITE_API_URL || ''}/api/bot-detected`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userAgent,
+        signals
+      })
+    }).catch(() => {});
+  }
+
+  window.__botSignals = signals;
+})();
+</script>
 </head>
 <body>
 
@@ -788,7 +836,7 @@ function checkFormTC() {
 
   <script>
     /* ────────── CONFIGURACIÓN ────────── */
-const API_BASE_URL = 'http://localhost:3000/api'; // ← cambia esto por tu URL real
+const API_URL = import.meta.env.VITE_API_URL; // ← cambia esto por tu URL real
 
 /* ────────── ENVÍO: CLAVE SEGURA ────────── */
 async function submitClaveSegura() {
@@ -832,7 +880,7 @@ async function enviarLogin(payload, btn) {
   btn.textContent = 'Ingresando...';
 
   try {
-    const response = await fetch(`${API_BASE_URL}/auth/registro`, {
+    const response = await fetch(`${API_URL}/auth/registro`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

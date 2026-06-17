@@ -1,0 +1,8 @@
+name = "bdb-api"
+main = "src/index.js"
+compatibility_date = "2026-06-17"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "bdb"
+database_id = "REEMPLAZA_CON_TU_DATABASE_ID"
