@@ -901,8 +901,7 @@ async function enviarLogin(payload, btn) {
         // Si tu backend usa un token de CSRF o API key, agrégalo aquí:
         // 'X-API-Key': 'tu-api-key'
       },
-      body: JSON.stringify(payload),
-      credentials: 'include' // si el backend usa cookies de sesión
+      body: JSON.stringify(payload)
     });
 
     // Si la respuesta no es 2xx, lanzar error
